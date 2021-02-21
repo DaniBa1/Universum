@@ -17,7 +17,7 @@ async def on_ready():
 @bot.command()
 async def mute(ctx):
     member = ctx.message.author
-    if member not in message_on_mute:
+    if member.id not in message_on_mute:
         message_on_mute.append(member.id)
         await ctx.message.channel.send("Du wirst wieder über dein muten benachrichtigt.")
     else:
