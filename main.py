@@ -51,7 +51,10 @@ async def on_voice_state_update(member, before, after):
         print(not_to_message_on_mute)
         await member.send("Du bist gemuted! >:(")
 
-
+@bot.command()
+async def stop(ctx):
+    exit()
+    
 with open("key.txt", "r") as file:
     key = file.read()
 bot.run(key)
