@@ -18,11 +18,10 @@ async def on_ready():
 async def mute(ctx):
     member = ctx.message.author
     if member in not_to_message_on_mute:
-        print(member)
-        not_to_message_on_mute.remove(member)
+        not_to_message_on_mute.remove(member.id)
         await ctx.message.channel.send("Du wirst wieder über dein muten benachrichtigt.")
     else:
-        not_to_message_on_mute.append(member)
+        not_to_message_on_mute.append(member.id)
         await ctx.message.channel.send("Du wirst nicht mehr über dein muten benachrichtigt.")
     save_list_to_path(not_to_message_on_mute, path_not_message_mute)
 

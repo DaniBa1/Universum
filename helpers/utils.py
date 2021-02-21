@@ -1,7 +1,6 @@
 import json
 import discord.client as Client
-def save_list_to_path(user_list, path):
-    id_list = [user.id for user in user_list]
+def save_list_to_path(id_list, path):
     with open(path,"w") as file:
         json.dump(id_list,file)
 
