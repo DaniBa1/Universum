@@ -3,27 +3,27 @@ from discord.ext import commands
 from helpers.utils import *
 bot = commands.Bot(command_prefix='!')
 
-path_not_message_mute = "saved_objects/not_message_mute.wtf"
-not_to_message_on_mute = []
+path_not_message_mute = "saved_objects/message_mute.wtf"
+message_on_mute = []
 
 
 @bot.event
 async def on_ready():
     for item in get_list_from_path(path_not_message_mute):
-        not_to_message_on_mute.append(item)
+        message_on_mute.append(item)
     print("I'm in!")
 
 
 @bot.command()
 async def mute(ctx):
     member = ctx.message.author
-    if member in not_to_message_on_mute:
-        not_to_message_on_mute.remove(member.id)
+    if member not in message_on_mute:
+        message_on_mute.append(member.id)
         await ctx.message.channel.send("Du wirst wieder über dein muten benachrichtigt.")
     else:
-        not_to_message_on_mute.append(member.id)
+        message_on_mute.remove(member.id)
         await ctx.message.channel.send("Du wirst nicht mehr über dein muten benachrichtigt.")
-    save_list_to_path(not_to_message_on_mute, path_not_message_mute)
+    save_list_to_path(message_on_mute, path_not_message_mute)
 
 
 @bot.command()
@@ -44,16 +44,14 @@ async def ordnungsruf(ctx):
 
 @bot.event
 async def on_voice_state_update(member, before, after):
-    print(not_to_message_on_mute)
-    if not before.self_mute and after.self_mute and member.id not in not_to_message_on_mute:
+    if not before.self_mute and after.self_mute and member.id in message_on_mute:
         print(member.id)
-        print(not_to_message_on_mute)
         await member.send("Du bist gemuted! >:(")
 
 @bot.command()
 async def stop(ctx):
     exit()
-    
+
 with open("key.txt", "r") as file:
     key = file.read()
 bot.run(key)
